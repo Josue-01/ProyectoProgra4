@@ -46,7 +46,8 @@ const ProductsUpdate = () => {
         console.error('Cada valor en el campo de imágenes debe ser una dirección URL válida.');
         return;
       }
-      await updateProduct(productData!.id, productData!); // Asegúrate de que productData no sea null aquí
+      await updateProduct(productData!.id, productData!);
+      navigate('/products');
     };
   
     const isValidUrl = (url: string) => {
@@ -64,6 +65,7 @@ const ProductsUpdate = () => {
   return (
     <div  className='formContainer'>
       <form onSubmit={handleSubmit}>
+        <label htmlFor="">Title</label>
       <input
         type="text"
         name="title"
@@ -71,6 +73,7 @@ const ProductsUpdate = () => {
         onChange={handleChange}
         placeholder="Title"
       />
+      <label htmlFor="">Price</label>
       <input
         type="number"
         name="price"
@@ -78,12 +81,14 @@ const ProductsUpdate = () => {
         onChange={handleChange}
         placeholder="Price"
       />
+      <label htmlFor="">Description</label>
       <textarea
         name="description"
         value={productData.description}
         onChange={handleChange}
         placeholder="Description"
       />
+      <label htmlFor="">Category Id</label>
       <input
         type="number"
         name="categoryId"
@@ -91,6 +96,7 @@ const ProductsUpdate = () => {
         onChange={handleChange}
         placeholder="Category ID"
       />
+      <label htmlFor="">URL Images</label>
       <input
         type="text"
         name="images"

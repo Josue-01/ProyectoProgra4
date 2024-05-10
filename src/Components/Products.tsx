@@ -28,7 +28,7 @@ const Products = () => {
           {products.map((product: ProductType) => (
             <tr key={product.id}>
               <td>{product.id}</td>
-              <td>{product.title}</td>
+              <td className='tittle'>{product.title}</td>
               <td className='actions'>
                 <Link className='button buttonUpdate' to={`/ProductsUpdate/${product.id}`}>Update</Link>
                 <Link className='button buttonView' to={`/ViewProducts/${product.id}`}>View</Link>

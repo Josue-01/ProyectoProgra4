@@ -24,38 +24,28 @@ const ProductsCreate = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     if (name === 'images') {
-      setProductData((prevData) => ({ ...prevData, [name]: [value] })); 
+      const imageUrl = value.trim(); // Eliminar espacios en blanco al inicio y al final
+      if (imageUrl) {
+        const updatedImages = imageUrl.split(',').map((url) => url.trim());
+        setProductData((prevData) => ({ ...prevData, [name]: updatedImages }));
+      } else {
+        setProductData((prevData) => ({ ...prevData, [name]: [] }));
+      }
     } else {
-
       setProductData((prevData) => ({ ...prevData, [name]: value }));
     }
   };
-
+  
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!Array.isArray(productData.images) || productData.images.length < 1) {
-      console.error('El campo de imágenes debe ser un array con al menos un elemento.');
-      return;
-    }
-    if (!productData.images.every((image) => isValidUrl(image))) {
-      console.error('Cada valor en el campo de imágenes debe ser una dirección URL válida.');
-      return;
-    }
     await addProduct(productData);
   };
 
-  const isValidUrl = (url: string) => {
-    try {
-      new URL(url);
-      return true;
-    } catch (error) {
-      return false;
-    }
-  };
 
   return (
 <div className='formContainer'>
 <form onSubmit={handleSubmit}>
+  <label htmlFor="">Title</label>
     <input
         type="text"
         name="title"
@@ -63,6 +53,7 @@ const ProductsCreate = () => {
         onChange={handleChange}
         placeholder="Title"
       />
+       <label htmlFor="">Price</label>
       <input
         type="number"
         name="price"
@@ -70,12 +61,14 @@ const ProductsCreate = () => {
         onChange={handleChange}
         placeholder="Price"
       />
+      <label htmlFor="">Description</label>
       <textarea
         name="description"
         value={productData.description}
         onChange={handleChange}
         placeholder="Description"
       />
+      <label htmlFor="">Category Id</label>
       <input
         type="number"
         name="categoryId"
@@ -83,6 +76,7 @@ const ProductsCreate = () => {
         onChange={handleChange}
         placeholder="Category ID"
       />
+      <label htmlFor="">URL Images</label>
       <input
         type="text"
         name="images"
