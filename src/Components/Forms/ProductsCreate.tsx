@@ -1,67 +1,103 @@
-import { useState } from 'react';
-import { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { ProductContext } from '../../Components/context/ProductProvider';
 import ProductType from '../../Types/ProductType';
+import '../../../public/css/FormsStyles.css'
+import { useNavigate } from 'react-router-dom';
 
 const ProductsCreate = () => {
   const { addProduct } = useContext(ProductContext);
 
-  //Valor por default en caso de no llenar todo los campos
-  const initialProductState: ProductType = {
+    const navigate = useNavigate();
+  
+    const handleBack = () => {
+      navigate('/products'); // Navega a la ruta "/products" al hacer clic en el botón
+    };
+  const [productData, setProductData] = useState<ProductType>({
     id: 0,
     title: '',
-    description: '',
     price: 0,
-    category: { id: 1, name: '', image: '' },
-    img: '',
-  };
+    description: '',
+    categoryId: 0,
+    images: [],
+  });
 
-  const [product, setProduct] = useState<ProductType>(initialProductState);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    if (name === 'category') {
-      // Actualiza solo la propiedad 'name' dentro de 'category'
-      setProduct(prevProduct => ({
-        ...prevProduct,
-        category: { ...prevProduct.category, id : 1, name: value, image: '' },
-      }));
+    if (name === 'images') {
+      setProductData((prevData) => ({ ...prevData, [name]: [value] })); 
     } else {
-      // Actualiza los demás campos del producto
-      setProduct(prevProduct => ({ ...prevProduct, [name]: value }));
+
+      setProductData((prevData) => ({ ...prevData, [name]: value }));
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await addProduct(product);
-    setProduct(initialProductState);
+    if (!Array.isArray(productData.images) || productData.images.length < 1) {
+      console.error('El campo de imágenes debe ser un array con al menos un elemento.');
+      return;
+    }
+    if (!productData.images.every((image) => isValidUrl(image))) {
+      console.error('Cada valor en el campo de imágenes debe ser una dirección URL válida.');
+      return;
+    }
+    await addProduct(productData);
+  };
+
+  const isValidUrl = (url: string) => {
+    try {
+      new URL(url);
+      return true;
+    } catch (error) {
+      return false;
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Title:
-        <input type="text" name="title" value={product.title} onChange={handleChange} />
-      </label>
-      <label>
-        Description:
-        <input type="text" name="description" value={product.description} onChange={handleChange} />
-      </label>
-      <label>
-        Price:
-        <input type="number" name="price" value={product.price} onChange={handleChange} />
-      </label>
-      <label>
-        Category Name:
-        <input type="text" name="category" value={product.category.name} onChange={handleChange} />
-      </label>
-      <label>
-        Image URL:
-        <input type="text" name="img" value={product.img} onChange={handleChange} />
-      </label>
-      <button type="submit">Add Product</button>
+<div className='formContainer'>
+<form onSubmit={handleSubmit}>
+    <input
+        type="text"
+        name="title"
+        value={productData.title}
+        onChange={handleChange}
+        placeholder="Title"
+      />
+      <input
+        type="number"
+        name="price"
+        value={productData.price}
+        onChange={handleChange}
+        placeholder="Price"
+      />
+      <textarea
+        name="description"
+        value={productData.description}
+        onChange={handleChange}
+        placeholder="Description"
+      />
+      <input
+        type="number"
+        name="categoryId"
+        value={productData.categoryId}
+        onChange={handleChange}
+        placeholder="Category ID"
+      />
+      <input
+        type="text"
+        name="images"
+        value={productData.images}
+        onChange={handleChange}
+        placeholder="Image URL"
+      />
+<div className='containerButtons'>
+<button type="submit">Add Product</button>
+      <button type="button" onClick={handleBack}>
+      Back
+    </button>
+</div>
     </form>
+</div>
   );
 };
 

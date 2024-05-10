@@ -5,6 +5,7 @@ import ProductType from '../../Types/ProductType';
 type ProductContextType = {
     products: ProductType[]; // Usa ProductType como tipo de los productos
     fetchProducts: () => void;
+    setPageNumber: (value: number)=>{};
   };
 
 export const ProductContext = createContext<ProductContextType | undefined>(undefined);

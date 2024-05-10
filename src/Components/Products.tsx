@@ -2,28 +2,25 @@ import { useContext } from 'react';
 import { ProductContext } from '../Components/context/ProductProvider';
 import ProductType from '../Types/ProductType';
 import { Link } from 'react-router-dom';
+import '../../public/css/styles.css'
+import Pager from '../Components/extensions/Pager';
 
 const Products = () => {
-  const { products, getProductById, deleteProduct } = useContext(ProductContext);
-
-  const handleUpdate = (id: number) => {
-    const productToUpdate = getProductById(id);
-  };
-
+  const { products, deleteProduct } = useContext(ProductContext);
   const handleDelete = (id: number) => {
     deleteProduct(id);
   };
 
+
   return (
-    <div>
+    <div className='container'>
       <h1>Products</h1>
-      <Link to="/ProductsCreate">Crear Producto</Link>
+      <Link className='button buttonCreate' to="/ProductsCreate">Crear Producto</Link>
       <table>
         <thead>
           <tr>
             <th>ID</th>
             <th>Title</th>
-            <th>Category</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -32,16 +29,18 @@ const Products = () => {
             <tr key={product.id}>
               <td>{product.id}</td>
               <td>{product.title}</td>
-              <td>{product.category.id}</td>
-              <td>
-                <button onClick={() => handleUpdate(product.id)}>Update</button>
-                <Link to={`/ViewProducts/${product.id}`}>View</Link>
-                <button onClick={() => handleDelete(product.id)}>Delete</button>
+              <td className='actions'>
+                <Link className='button buttonUpdate' to={`/ProductsUpdate/${product.id}`}>Update</Link>
+                <Link className='button buttonView' to={`/ViewProducts/${product.id}`}>View</Link>
+                <button className='buttonDelete' onClick={() => handleDelete(product.id)}>Delete</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+      <div>
+       <Pager />
+     </div>
     </div>
   );
 };

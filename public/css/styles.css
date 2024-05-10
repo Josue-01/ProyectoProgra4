@@ -1,0 +1,108 @@
+#root{
+    width: 100% !important;
+}
+.container{
+    display: flex;
+    width: 90%;
+    height: auto;
+    background-color: rgb(70, 69, 69);
+    padding: 10px;
+    margin: 10px;
+    flex-direction: column;
+    align-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+.button{
+    width: 64px;
+    height: 30px;
+    background-color: gainsboro;
+    border: 2px solid rgb(197, 197, 197);
+    margin: 9px;
+    padding: 5px;
+    border-radius: 10px;
+    color: black;
+    
+}
+
+.container table{
+    margin: 10px;
+    padding: 10px;
+}
+
+.actions{
+    display: flex;
+}
+
+.container table thead tr th{
+    border: 2px solid rgb(27, 27, 27);
+    background-color: rgb(17, 17, 17);
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    margin: 0px;
+}
+
+
+.container table tbody tr:nth-child(even) td {
+    background-color: rgb(17, 17, 17); /* Color para filas pares */
+    color: white;
+    font-size: 1rem;
+    margin: 0px;
+  }
+  
+  .container table tbody tr:nth-child(odd) td {
+    background-color: rgb(27, 27, 27); /* Color para filas impares */
+    color: white;
+    font-size: 1rem;
+    margin: 0px;
+  }
+  .buttonUpdate{
+    color: rgb(241, 241, 241);
+    background: rgb(13, 35, 160);
+    border-color: rgb(13, 35, 160);
+  }
+  .buttonUpdate:hover{
+    background: rgb(4, 16, 83);
+    border-color: rgb(4, 16, 83);
+    color: rgb(241, 241, 241);
+  }
+  .buttonDelete{
+    margin: 10px 5px;
+    width: 64px;
+    padding: 5px;
+    color: rgb(241, 241, 241);
+    background: rgb(131, 3, 3);
+    height: 44px;
+  }
+
+  .buttonDelete:hover{
+    background: rgb(80, 4, 4);
+    border-color: rgb(92, 5, 5);
+  }
+
+  .buttonCreate{
+    width: 150px;
+    border-color: rgb(4, 95, 16);
+    color: rgb(241, 241, 241);
+    background: rgb(4, 95, 16);
+  }
+
+  .buttonCreate:hover{
+    background: rgb(4, 56, 11);
+    border-color: rgb(4, 56, 11);
+    color: rgb(241, 241, 241);
+  }
+
+  .buttonView{
+    border-color: rgb(13, 134, 118);
+    color: rgb(241, 241, 241);
+    background:rgb(13, 134, 118);
+  }
+
+  .buttonView:hover{
+    border-color:rgb(7, 59, 52);
+    color: rgb(241, 241, 241);
+    background:rgb(7, 59, 52);
+  }

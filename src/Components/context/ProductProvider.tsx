@@ -1,40 +1,62 @@
-import { createContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useState, ReactNode, useEffect } from 'react';
 import ProductType from '../../Types/ProductType';
 
+//mcrea los metodos y los parametros o tipoa dw datos que recibe
 type ProductContextType = {
   products: ProductType[];
-  getProducts: () => void;
+  getProducts: (pageNumber: number, pageSize: number) => void;
   getProductById: (id: number) => Promise<ProductType | undefined>;
   addProduct: (product: ProductType) => Promise<void>;
   updateProduct: (id: number, updatedProduct: ProductType) => Promise<void>;
   deleteProduct: (id: number) => Promise<void>;
+  pageNumber: number;
+  pageSize: number;
+  //para asignarle valores mas adewlante
+  setPageNumber: (pageNumber: number) => void;
+  setPageSize: (pageSize: number) => void;
 };
-
+//se le aasigna una valor por dewfault
 export const ProductContext = createContext<ProductContextType>({
   products: [],
   getProducts: () => {},
+  //devuelve un undefine
   getProductById: () => Promise.resolve(undefined),
+  //devuevle un arreglo vacio
   addProduct: () => Promise.resolve(),
+  //
   updateProduct: () => Promise.resolve(),
   deleteProduct: () => Promise.resolve(),
+  pageNumber: 0,
+  pageSize: 10,
+  setPageNumber: () => {},
+  setPageSize: () => {},
 });
 
+//investigar
 type ProductProviderProps = {
   children: ReactNode;
 };
 
 export const ProductProvider = ({ children }: ProductProviderProps) => {
   const [products, setProducts] = useState<ProductType[]>([]);
+  const [pageNumber, setPageNumber] = useState<number>(0);
+  const [pageSize, setPageSize] = useState<number>(10);
 
-  const getProducts = async () => {
+  const getProducts = async (pageNumber: number, pageSize: number) => {
     try {
-      const response = await fetch('https://api.escuelajs.co/api/v1/products');
+      const response = await fetch(`https://api.escuelajs.co/api/v1/products?offset=${pageNumber * pageSize}&limit=${pageSize}`);
+      //llenamos la data con la   que devuelva la API
       const data: ProductType[] = await response.json();
       setProducts(data);
     } catch (error) {
       console.error('Error al obtener los productos:', error);
     }
   };
+
+  useEffect(() => {
+    getProducts(pageNumber, pageSize);
+  }, [pageNumber, pageSize]); // Se ejecutará cada vez que pageNumber o pageSize cambien
+
 
   const getProductById = async (id: number): Promise<ProductType | undefined> => {
     try {
@@ -59,7 +81,7 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
         },
         body: JSON.stringify(product),
       });
-      getProducts();
+      getProducts(pageNumber, pageSize); // Usar pageNumber y pageSize actuales
     } catch (error) {
       console.error('Error al agregar el producto:', error);
     }
@@ -74,7 +96,7 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
         },
         body: JSON.stringify(updatedProduct),
       });
-      getProducts();
+      getProducts(pageNumber, pageSize); // Usar pageNumber y pageSize actuales
     } catch (error) {
       console.error('Error al actualizar el producto:', error);
     }
@@ -82,21 +104,18 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
 
   const deleteProduct = async (id: number) => {
     try {
-      //Eliminar de la api
+      // Eliminar de la api
       await fetch(`https://api.escuelajs.co/api/v1/products/${id}`, {
         method: 'DELETE',
       });
-      //Eliminar del array local 
-      getProducts();
+      // Eliminar del array local
+      getProducts(pageNumber, pageSize); // Usar pageNumber y pageSize actuales
     } catch (error) {
       console.error('Error al eliminar producto:', error);
     }
   };
 
-  useEffect(() => {
-    getProducts();
-  }, []);
-
+  //los valores que van a contener, es tdoo lo que puede recibir y llmar, llama a todos los metodos
   const contextValue: ProductContextType = {
     products,
     getProducts,
@@ -104,9 +123,14 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
     addProduct,
     updateProduct,
     deleteProduct,
+    pageNumber,
+    pageSize,
+    setPageNumber,
+    setPageSize,
   };
 
   return (
+    //para retornar el product proviter
     <ProductContext.Provider value={contextValue}>
       {children}
     </ProductContext.Provider>

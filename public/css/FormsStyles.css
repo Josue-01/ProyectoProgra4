@@ -1,0 +1,64 @@
+#root{
+    width: 100% !important;
+}
+.formContainer{
+    display: flex;
+    width: 100%;
+}
+
+.formContainer form{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    align-content: center;
+    flex-wrap: wrap;
+}
+
+.formContainer form input,
+.formContainer form textarea{
+    margin: 20px 10px;
+    width: 50%;
+    padding: 5px;
+    background: white;
+    border-radius: 5px;
+    color: rgb(0, 0, 0);
+    border: 1px solid rgb(104, 103, 103);
+
+}
+.formContainer form textarea{
+    min-height: 100px;
+    max-height: auto;
+}
+
+.formContainer form input:focus{
+    border: 2px solid rgb(3, 3, 90);
+}
+.containerButtons{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-content: center;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.containerButtons button{
+    margin: 5px;
+    padding: 10px;
+}
+
+.containerButtons button:nth-child(1){
+    border-color: rgb(4, 95, 16);
+    color: rgb(241, 241, 241);
+    background: rgb(4, 95, 16);
+    width: 140px;
+}
+
+.containerButtons button:nth-child(2){
+    border-color: rgb(131, 3, 3);
+    color: rgb(241, 241, 241);
+    background: rgb(131, 3, 3);
+    width: 140px;
+}
