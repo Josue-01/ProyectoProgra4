@@ -1,0 +1,24 @@
+.footer {
+  background-color: #333;
+  color: #fff;
+  padding: 10px; /* Reducir el padding */
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-section {
+  flex: 1;
+  margin-right: 10px; /* Reducir el margen */
+}
+
+.footer-bottom {
+  text-align: center;
+  font-size: 0.8rem; /* Reducir el tamaño de la fuente */
+}

@@ -32,7 +32,9 @@ const ProductsView = () => {
       <h2>Detalles del Producto</h2>
       <div className='containerView' key={product.id}>
         <h2>#{product.id}</h2>
-        <h3>Titulo: {product.title}</h3>
+        <h3>Title: {product.title}</h3>
+        <h3>Price: {product.price}</h3>
+        <h4>Category: {product.category.name}</h4>
         <span>{product.description}</span>
         <img src={product.images[0]} alt={product.title} />
       </div>
